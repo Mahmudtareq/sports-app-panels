@@ -1,0 +1,1462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Photography Portfolio & CMS — Documentation</title>
+  <style>
+    /* ─── Reset & Base ─────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --brand:        #ff642b;
+      --brand-light:  #fff2ed;
+      --brand-dark:   #cc4a18;
+      --text:         #1a1a1a;
+      --text-muted:   #555;
+      --border:       #e0e0e0;
+      --code-bg:      #f4f4f4;
+      --table-header: #f0f0f0;
+      --page-bg:      #fff;
+      --sidebar-bg:   #1a1a1a;
+      --sidebar-text: #e8e8e8;
+      --sidebar-active: #ff642b;
+    }
+
+    html { font-size: 15px; scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      color: var(--text);
+      background: var(--page-bg);
+      line-height: 1.7;
+      display: flex;
+    }
+
+    /* ─── Sidebar ───────────────────────────────────────────── */
+    .sidebar {
+      width: 260px;
+      height: 100vh;
+      background: var(--sidebar-bg);
+      color: var(--sidebar-text);
+      padding: 32px 0;
+      position: fixed;
+      top: 0; left: 0;
+      overflow-y: auto;
+      z-index: 100;
+      scrollbar-width: thin;
+      scrollbar-color: #444 #1a1a1a;
+    }
+
+    .sidebar::-webkit-scrollbar { width: 4px; }
+    .sidebar::-webkit-scrollbar-track { background: #1a1a1a; }
+    .sidebar::-webkit-scrollbar-thumb { background: #444; border-radius: 2px; }
+
+    .sidebar-brand {
+      padding: 0 24px 24px;
+      border-bottom: 1px solid #333;
+      margin-bottom: 16px;
+    }
+
+    .sidebar-brand h1 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.3;
+    }
+
+    .sidebar-brand p {
+      font-size: 0.75rem;
+      color: #999;
+      margin-top: 4px;
+    }
+
+    .sidebar nav a {
+      display: block;
+      padding: 7px 24px;
+      color: #bbb;
+      text-decoration: none;
+      font-size: 0.82rem;
+      transition: color 0.15s, background 0.15s;
+      border-left: 3px solid transparent;
+    }
+
+    .sidebar nav a:hover,
+    .sidebar nav a.active {
+      color: #fff;
+      background: rgba(255,255,255,0.05);
+      border-left-color: var(--sidebar-active);
+    }
+
+    .sidebar nav .nav-section {
+      padding: 16px 24px 4px;
+      font-size: 0.68rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #666;
+    }
+
+    /* ─── Main Content ──────────────────────────────────────── */
+    .main {
+      margin-left: 260px;
+      flex: 1;
+      min-width: 0;
+      width: calc(100vw - 260px);
+      padding: 48px 64px;
+    }
+
+    /* ─── Cover ─────────────────────────────────────────────── */
+    .cover {
+      background: linear-gradient(135deg, var(--brand) 0%, var(--brand-dark) 100%);
+      color: #fff;
+      padding: 56px 56px 48px;
+      margin: -48px -64px 48px;
+      border-bottom: 4px solid var(--brand-dark);
+    }
+
+    .cover h1 {
+      font-size: 2.4rem;
+      font-weight: 800;
+      line-height: 1.2;
+      margin-bottom: 12px;
+    }
+
+    .cover p {
+      font-size: 1rem;
+      opacity: 0.9;
+      max-width: 580px;
+      line-height: 1.6;
+      margin-bottom: 24px;
+    }
+
+    .cover-meta {
+      display: flex;
+      gap: 28px;
+      font-size: 0.8rem;
+      opacity: 0.85;
+      flex-wrap: wrap;
+    }
+
+    .cover-meta span {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* ─── Typography ────────────────────────────────────────── */
+    h2 {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--text);
+      margin: 48px 0 16px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--brand);
+      scroll-margin-top: 24px;
+    }
+
+    h3 {
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: var(--text);
+      margin: 28px 0 10px;
+      scroll-margin-top: 24px;
+    }
+
+    h4 {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--brand-dark);
+      margin: 20px 0 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    p { margin-bottom: 14px; }
+
+    a { color: var(--brand); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    ul, ol { margin: 12px 0 16px 24px; }
+    li { margin-bottom: 6px; }
+
+    strong { font-weight: 600; }
+
+    /* ─── Code ──────────────────────────────────────────────── */
+    code {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 1px 6px;
+      font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+      font-size: 0.85em;
+      color: var(--brand-dark);
+    }
+
+    pre {
+      background: #1e1e1e;
+      color: #d4d4d4;
+      border-radius: 8px;
+      padding: 20px 24px;
+      overflow-x: auto;
+      margin: 16px 0;
+      font-size: 0.82rem;
+      line-height: 1.6;
+      border-left: 4px solid var(--brand);
+    }
+
+    pre code {
+      background: none;
+      border: none;
+      padding: 0;
+      color: inherit;
+      font-size: inherit;
+    }
+
+    /* ─── Tables ────────────────────────────────────────────── */
+    .table-wrap { overflow-x: auto; margin: 16px 0; }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+    }
+
+    thead th {
+      background: var(--table-header);
+      font-weight: 600;
+      text-align: left;
+      padding: 10px 14px;
+      border: 1px solid var(--border);
+      white-space: nowrap;
+    }
+
+    tbody td {
+      padding: 9px 14px;
+      border: 1px solid var(--border);
+      vertical-align: top;
+    }
+
+    tbody tr:nth-child(even) { background: #fafafa; }
+
+    /* ─── Callouts ──────────────────────────────────────────── */
+    .callout {
+      border-left: 4px solid var(--brand);
+      background: var(--brand-light);
+      padding: 14px 18px;
+      border-radius: 0 6px 6px 0;
+      margin: 16px 0;
+      font-size: 0.88rem;
+    }
+
+    .callout.info    { border-color: #2196f3; background: #e3f2fd; }
+    .callout.warning { border-color: #ff9800; background: #fff3e0; }
+    .callout.tip     { border-color: #4caf50; background: #e8f5e9; }
+
+    .callout strong { display: block; margin-bottom: 4px; }
+
+    /* ─── API Endpoint cards ────────────────────────────────── */
+    .endpoint {
+      background: #f8f8f8;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 18px 20px;
+      margin: 14px 0;
+    }
+
+    .endpoint-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+
+    .method {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 4px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      font-family: monospace;
+      text-transform: uppercase;
+    }
+
+    .method.get    { background: #e8f5e9; color: #2e7d32; border: 1px solid #a5d6a7; }
+    .method.post   { background: #e3f2fd; color: #1565c0; border: 1px solid #90caf9; }
+    .method.put    { background: #fff8e1; color: #f57f17; border: 1px solid #ffe082; }
+    .method.patch  { background: #f3e5f5; color: #6a1b9a; border: 1px solid #ce93d8; }
+    .method.delete { background: #ffebee; color: #b71c1c; border: 1px solid #ef9a9a; }
+
+    .endpoint-path {
+      font-family: monospace;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .endpoint-desc {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 0;
+    }
+
+    .endpoint-params {
+      margin-top: 8px;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+
+    /* ─── Feature Grid ──────────────────────────────────────── */
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+      margin: 20px 0;
+    }
+
+    .feature-card {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 20px;
+      background: #fafafa;
+    }
+
+    .feature-card h4 {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--brand);
+      margin: 0 0 8px;
+      text-transform: none;
+      letter-spacing: 0;
+    }
+
+    .feature-card p {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      margin: 0;
+      line-height: 1.5;
+    }
+
+    /* ─── Tech Stack ────────────────────────────────────────── */
+    .tech-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 10px;
+      margin: 16px 0;
+    }
+
+    .tech-item {
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 12px 14px;
+      font-size: 0.82rem;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .tech-item strong { font-size: 0.9rem; }
+    .tech-item span { color: var(--text-muted); }
+
+    /* ─── Project Structure Tree ─────────────────────────────── */
+    .tree {
+      background: #1e1e1e;
+      color: #d4d4d4;
+      border-radius: 8px;
+      padding: 20px 24px;
+      font-family: 'Consolas', 'Monaco', monospace;
+      font-size: 0.8rem;
+      line-height: 1.9;
+      white-space: pre;
+      overflow-x: auto;
+      border-left: 4px solid var(--brand);
+      margin: 16px 0;
+    }
+
+    .tree .dir     { color: #9cdcfe; }
+    .tree .comment { color: #6a9955; }
+
+    /* ─── Divider ────────────────────────────────────────────── */
+    hr {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 40px 0;
+    }
+
+    /* ─── Footer ─────────────────────────────────────────────── */
+    .doc-footer {
+      margin-top: 64px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      text-align: center;
+    }
+
+    /* ─── Print / PDF ────────────────────────────────────────── */
+    @media print {
+      * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+
+      .sidebar { display: none !important; }
+
+      body { display: block; font-size: 12px; }
+
+      .main {
+        margin-left: 0 !important;
+        width: 100% !important;
+        padding: 24px 36px;
+      }
+
+      .cover {
+        margin: -24px -36px 36px;
+        padding: 40px 36px 32px;
+      }
+
+      /* Each major h2 starts on a new page */
+      h2 {
+        page-break-before: always;
+        break-before: page;
+        page-break-after: avoid;
+        break-after: avoid;
+      }
+
+      /* First h2 (Overview) must NOT force a page break */
+      h2:first-of-type { page-break-before: avoid; break-before: avoid; }
+
+      h3 {
+        page-break-after: avoid;
+        break-after: avoid;
+        page-break-inside: avoid;
+        break-inside: avoid;
+      }
+
+      h4 { page-break-after: avoid; break-after: avoid; }
+
+      /* Keep these blocks together on one page */
+      .endpoint,
+      .callout,
+      .feature-card,
+      .tech-item,
+      .table-wrap,
+      table,
+      .feature-grid,
+      .tech-grid {
+        page-break-inside: avoid;
+        break-inside: avoid;
+      }
+
+      pre {
+        white-space: pre-wrap !important;
+        word-break: break-word !important;
+        overflow: visible !important;
+        page-break-inside: avoid;
+        break-inside: avoid;
+        font-size: 0.78rem;
+        line-height: 1.5;
+        padding: 14px 18px;
+        border-radius: 4px;
+      }
+
+      .tree {
+        white-space: pre-wrap !important;
+        word-break: break-word !important;
+        overflow: visible !important;
+        font-size: 0.72rem !important;
+        line-height: 1.65 !important;
+        padding: 14px 18px;
+        border-radius: 4px;
+        orphans: 2;
+        widows: 2;
+      }
+
+      thead { display: table-header-group; }
+      tbody tr { page-break-inside: avoid; break-inside: avoid; }
+
+      .method { border: 1px solid #ccc !important; padding: 2px 6px; font-size: 0.68rem; }
+
+      .feature-grid, .tech-grid { display: block; }
+
+      .feature-card, .tech-item { margin-bottom: 10px; }
+
+      @page { margin: 20mm 18mm; size: A4; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ─────────────────────── SIDEBAR ─────────────────────────── -->
+<aside class="sidebar">
+  <div class="sidebar-brand">
+    <h1>Photography Portfolio</h1>
+    <p>Template Documentation · v1.0.0</p>
+  </div>
+  <nav>
+    <div class="nav-section">Introduction</div>
+    <a href="#overview">Overview</a>
+    <a href="#features">Features</a>
+    <a href="#tech-stack">Technology Stack</a>
+
+    <div class="nav-section">Setup</div>
+    <a href="#requirements">Requirements</a>
+    <a href="#installation">Installation &amp; Setup</a>
+    <a href="#env-vars">Environment Variables</a>
+    <a href="#running">Running the Application</a>
+
+    <div class="nav-section">Architecture</div>
+    <a href="#project-structure">Project Structure</a>
+    <a href="#pages-routes">Pages &amp; Routes</a>
+    <a href="#auth">Authentication</a>
+
+    <div class="nav-section">API Reference</div>
+    <a href="#api-public">Public Endpoints</a>
+    <a href="#api-admin-auth">Admin Authentication</a>
+    <a href="#api-gallery">Gallery</a>
+    <a href="#api-categories">Categories</a>
+    <a href="#api-stories">Stories</a>
+    <a href="#api-banner">Banner</a>
+    <a href="#api-team">Team</a>
+    <a href="#api-testimonial">Testimonial</a>
+    <a href="#api-contact">Contact</a>
+    <a href="#api-services">Service Gallery</a>
+    <a href="#api-home">Home Sections</a>
+    <a href="#api-file">File Upload</a>
+    <a href="#api-settings">Settings</a>
+    <a href="#api-dashboard">Dashboard Stats</a>
+
+    <div class="nav-section">Data Layer</div>
+    <a href="#db-models">Database Models</a>
+    <a href="#image-mgmt">Image Management</a>
+
+    <div class="nav-section">Deployment</div>
+    <a href="#deployment">Deployment Guide</a>
+    <a href="#changelog">Changelog</a>
+  </nav>
+</aside>
+
+<!-- ─────────────────────── MAIN ────────────────────────────── -->
+<main class="main">
+
+  <!-- ── COVER ───────────────────────────────────────────────── -->
+  <div class="cover">
+    <h1>Photography Portfolio &amp; CMS</h1>
+    <p>A production-ready, full-stack photography portfolio and content management system built with Next.js 16, React 19, MongoDB, and Cloudinary. Includes a polished public website and a powerful admin dashboard.</p>
+    <div class="cover-meta">
+      <span>📋 Version 1.0.0</span>
+      <span>📷 Next.js 16 + React 19</span>
+      <span>🍃 MongoDB + Mongoose</span>
+      <span>☁️ Cloudinary</span>
+    </div>
+  </div>
+
+  <!-- ── OVERVIEW ─────────────────────────────────────────────── -->
+  <h2 id="overview">Overview</h2>
+  <p><strong>Photography Portfolio &amp; CMS</strong> is a complete, full-stack web application built specifically for photographers, studios, and creative professionals. It ships with everything you need out of the box:</p>
+  <ul>
+    <li>A beautifully designed <strong>public website</strong> with a homepage, photo gallery with category filters, photography stories, about page, and a contact form.</li>
+    <li>A feature-rich <strong>Admin Dashboard</strong> for managing gallery photos, categories, stories, team members, testimonials, banners, services, contact submissions, and all site settings — without touching any code.</li>
+    <li>A robust <strong>REST API layer</strong> with JWT-based authentication, Zod validation, and a consistent response format.</li>
+    <li><strong>Cloudinary</strong> integration for image hosting and CDN delivery, configured entirely from the admin panel.</li>
+    <li><strong>MongoDB</strong> as the database with Mongoose ODM, optimised for serverless environments with connection pooling.</li>
+  </ul>
+
+  <!-- ── FEATURES ─────────────────────────────────────────────── -->
+  <h2 id="features">Features</h2>
+
+  <h3>Public Website</h3>
+  <div class="feature-grid">
+    <div class="feature-card">
+      <h4>Photography Gallery</h4>
+      <p>Category-filtered photo gallery with real-time filtering tabs and drag-and-drop reordering in the admin.</p>
+    </div>
+    <div class="feature-card">
+      <h4>Photography Stories</h4>
+      <p>Rich story pages with camera metadata (lens, shutter speed, mood), multiple photo galleries, and SEO slugs.</p>
+    </div>
+    <div class="feature-card">
+      <h4>About &amp; Team</h4>
+      <p>Studio about page, sortable team member profiles with designations and photos.</p>
+    </div>
+    <div class="feature-card">
+      <h4>Services Showcase</h4>
+      <p>Visual service cards with images and descriptions, fully managed from the admin dashboard.</p>
+    </div>
+    <div class="feature-card">
+      <h4>Testimonials Carousel</h4>
+      <p>Client testimonials in an Embla-powered carousel with drag-and-drop ordering.</p>
+    </div>
+    <div class="feature-card">
+      <h4>Contact Form</h4>
+      <p>Client inquiry form with category selection, phone input, and message field. All submissions viewable in admin.</p>
+    </div>
+    <div class="feature-card">
+      <h4>SEO Ready</h4>
+      <p>Configurable metadata, Open Graph image, keywords, and page titles managed from the admin settings panel.</p>
+    </div>
+    <div class="feature-card">
+      <h4>Responsive Design</h4>
+      <p>Fully responsive across all screen sizes with Tailwind CSS v4 and shadcn/ui components.</p>
+    </div>
+  </div>
+
+  <h3>Admin Dashboard</h3>
+  <div class="feature-grid">
+    <div class="feature-card">
+      <h4>Secure Authentication</h4>
+      <p>JWT-based admin login with bcrypt password hashing and NextAuth v5 session management.</p>
+    </div>
+    <div class="feature-card">
+      <h4>Rich Text Editor</h4>
+      <p>Story content powered by SunEditor — a full-featured WYSIWYG HTML editor.</p>
+    </div>
+    <div class="feature-card">
+      <h4>Drag-and-Drop Ordering</h4>
+      <p>Reorder gallery photos, categories, banners, team, testimonials, and services with @dnd-kit.</p>
+    </div>
+    <div class="feature-card">
+      <h4>Image Upload</h4>
+      <p>Direct Cloudinary uploads from every admin form — no manual image management needed.</p>
+    </div>
+    <div class="feature-card">
+      <h4>Settings Panel</h4>
+      <p>Configure company info, social links, SEO metadata, Cloudinary credentials, and terms &amp; policy from one place.</p>
+    </div>
+    <div class="feature-card">
+      <h4>Dashboard Statistics</h4>
+      <p>At-a-glance stats: total gallery items, stories, contact submissions, team members, and testimonials.</p>
+    </div>
+  </div>
+
+  <!-- ── TECH STACK ────────────────────────────────────────────── -->
+  <h2 id="tech-stack">Technology Stack</h2>
+  <div class="tech-grid">
+    <div class="tech-item"><strong>Next.js 16</strong><span>App Router, Server Components, Server Actions</span></div>
+    <div class="tech-item"><strong>React 19</strong><span>Latest stable release</span></div>
+    <div class="tech-item"><strong>TypeScript 5</strong><span>Strict type safety throughout</span></div>
+    <div class="tech-item"><strong>MongoDB 6+</strong><span>via Mongoose 9 ODM</span></div>
+    <div class="tech-item"><strong>NextAuth v5</strong><span>Session + JWT authentication</span></div>
+    <div class="tech-item"><strong>Tailwind CSS v4</strong><span>Utility-first styling</span></div>
+    <div class="tech-item"><strong>Radix UI + shadcn</strong><span>Accessible UI primitives</span></div>
+    <div class="tech-item"><strong>React Hook Form</strong><span>Performant forms</span></div>
+    <div class="tech-item"><strong>Zod</strong><span>Schema-first validation</span></div>
+    <div class="tech-item"><strong>TanStack Table</strong><span>Headless data tables</span></div>
+    <div class="tech-item"><strong>@dnd-kit</strong><span>Drag-and-drop sorting</span></div>
+    <div class="tech-item"><strong>SunEditor</strong><span>Rich text editor</span></div>
+    <div class="tech-item"><strong>Cloudinary</strong><span>Media storage &amp; delivery</span></div>
+    <div class="tech-item"><strong>Zustand</strong><span>Lightweight state management</span></div>
+    <div class="tech-item"><strong>Embla Carousel</strong><span>Smooth carousels</span></div>
+    <div class="tech-item"><strong>React Photo Album</strong><span>Masonry photo layouts</span></div>
+    <div class="tech-item"><strong>Flatpickr</strong><span>Date &amp; time picker</span></div>
+    <div class="tech-item"><strong>React Hot Toast</strong><span>Toast notifications</span></div>
+    <div class="tech-item"><strong>Lucide Icons</strong><span>Modern SVG icon set</span></div>
+    <div class="tech-item"><strong>Moment Timezone</strong><span>Date &amp; timezone utilities</span></div>
+  </div>
+
+  <!-- ── REQUIREMENTS ──────────────────────────────────────────── -->
+  <h2 id="requirements">Requirements</h2>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Requirement</th><th>Minimum Version</th><th>Notes</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Node.js</td><td>18.17 or later</td><td>LTS version recommended</td></tr>
+        <tr><td>npm</td><td>9.x or later</td><td><code>npm install -g npm</code></td></tr>
+        <tr><td>MongoDB</td><td>6.0 or later</td><td>Local or MongoDB Atlas (free tier)</td></tr>
+        <tr><td>Cloudinary Account</td><td>Any</td><td>Free tier is sufficient</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ── INSTALLATION ──────────────────────────────────────────── -->
+  <h2 id="installation">Installation &amp; Setup</h2>
+
+  <h3>Step 1 — Extract Files</h3>
+  <pre>unzip template-photography.zip -d template-photography
+cd template-photography</pre>
+
+  <h3>Step 2 — Install Dependencies</h3>
+  <pre>npm install</pre>
+
+  <h3>Step 3 — Configure Environment Variables</h3>
+  <pre>cp .env.example .env
+# Then edit .env with your actual values</pre>
+  <p>See the <a href="#env-vars">Environment Variables</a> section for all required values.</p>
+
+  <h3>Step 4 — Set Up MongoDB</h3>
+  <p>Create a free cluster on <strong>MongoDB Atlas</strong>, create a database user with read/write access, whitelist your IP (or <code>0.0.0.0/0</code> for all), and copy the connection string into <code>MONGODB_URI</code>.</p>
+
+  <h3>Step 5 — Create Initial Admin User</h3>
+  <p>Connect to your MongoDB database (via Atlas UI or Compass) and insert a document into the <code>users</code> collection:</p>
+  <pre>{
+  "name": "Admin",
+  "email": "admin@example.com",
+  "password": "&lt;bcrypt-hashed-password&gt;",
+  "role": "admin"
+}</pre>
+  <div class="callout info">
+    <strong>ℹ️ Generating a bcrypt hash</strong>
+    Use an online bcrypt generator or run <code>node -e "const b=require('bcrypt');b.hash('yourpassword',10).then(console.log)"</code> in a terminal with bcrypt installed.
+  </div>
+
+  <h3>Step 6 — Configure Cloudinary (After First Login)</h3>
+  <p>Log into the admin dashboard and navigate to <strong>Admin → Settings → Cloudinary</strong>. Enter your Cloud Name, API Key, API Secret, and folder name, then save.</p>
+
+  <h3>Step 7 — Start Development Server</h3>
+  <pre>npm run dev</pre>
+  <p>Open <strong>http://localhost:3000</strong> for the portfolio site. The admin dashboard is at <strong>http://localhost:3000/admin/login</strong>. Documentation is at <strong>http://localhost:3000/documentation</strong>.</p>
+
+  <!-- ── ENV VARS ──────────────────────────────────────────────── -->
+  <h2 id="env-vars">Environment Variables</h2>
+  <p>Create a <code>.env</code> file in the project root with the following variables:</p>
+
+  <pre># ── App ────────────────────────────────────────────────────────
+# Public base URL used for internal API calls
+NEXT_PUBLIC_BASE_URL=http://localhost:3000
+
+# ── Authentication ──────────────────────────────────────────────
+# Set true when running behind a proxy or on platforms like Vercel
+AUTH_TRUST_HOST=true
+
+# NextAuth callback URL — must match your deployment domain
+NEXTAUTH_URL=http://localhost:3000
+
+# Secret key for signing JWT tokens
+# Generate: openssl rand -base64 32
+NEXTAUTH_SECRET=your_strong_random_secret_min_32_chars
+
+# ── Database ────────────────────────────────────────────────────
+MONGODB_URI=mongodb+srv://&lt;user&gt;:&lt;password&gt;@cluster.mongodb.net/photography</pre>
+
+  <div class="callout">
+    <strong>☁️ Cloudinary Credentials</strong>
+    The <code>cloud_name</code>, <code>api_key</code>, and <code>api_secret</code> are stored and managed through <strong>Admin Dashboard → Settings → Cloudinary</strong> (saved in the database). They do not need to be set as environment variables.
+  </div>
+  <div class="callout warning">
+    <strong>⚠️ Security Notice</strong>
+    Never commit <code>.env</code> to version control. Add it to <code>.gitignore</code>.
+  </div>
+
+  <!-- ── RUNNING ───────────────────────────────────────────────── -->
+  <h2 id="running">Running the Application</h2>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Command</th><th>Description</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><code>npm run dev</code></td><td>Start development server with Turbopack at <code>localhost:3000</code></td></tr>
+        <tr><td><code>npm run build</code></td><td>Create an optimised production build</td></tr>
+        <tr><td><code>npm start</code></td><td>Serve the production build</td></tr>
+        <tr><td><code>npm run lint</code></td><td>Run ESLint code quality checks</td></tr>
+        <tr><td><code>npm run lint:fix</code></td><td>Auto-fix ESLint issues</td></tr>
+        <tr><td><code>npm run format</code></td><td>Format all files with Prettier</td></tr>
+        <tr><td><code>npm run type-check</code></td><td>TypeScript type checking (no emit)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ── PROJECT STRUCTURE ─────────────────────────────────────── -->
+  <h2 id="project-structure">Project Structure</h2>
+
+  <div class="tree"><span class="dir">template-photography/</span>
+├── <span class="dir">app/</span>                            <span class="comment"># Next.js App Router root</span>
+│   ├── layout.tsx                  <span class="comment"># Root layout (fonts, providers)</span>
+│   ├── globals.css
+│   ├── <span class="dir">documentation/</span>              <span class="comment"># /documentation route</span>
+│   │   └── page.tsx
+│   ├── <span class="dir">(public)/</span>                   <span class="comment"># Public-facing pages (no auth)</span>
+│   │   ├── layout.tsx              <span class="comment"># Header + Footer wrapper</span>
+│   │   ├── page.tsx                <span class="comment"># Homepage  "/"</span>
+│   │   ├── <span class="dir">gallery/</span>page.tsx        <span class="comment"># "/gallery"</span>
+│   │   ├── <span class="dir">about/</span>page.tsx          <span class="comment"># "/about"</span>
+│   │   ├── <span class="dir">stories/</span>page.tsx        <span class="comment"># "/stories"</span>
+│   │   ├── <span class="dir">stories/[slug]/</span>page.tsx <span class="comment"># "/stories/:slug"</span>
+│   │   └── <span class="dir">lets-connect/</span>page.tsx   <span class="comment"># "/lets-connect"</span>
+│   ├── <span class="dir">(admin)/admin/login/</span>        <span class="comment"># "/admin/login"</span>
+│   └── <span class="dir">(private)/admin/dashboard/</span>  <span class="comment"># Protected admin (95+ pages)</span>
+│       ├── page.tsx                <span class="comment"># Dashboard home</span>
+│       ├── <span class="dir">gallery/</span>
+│       ├── <span class="dir">stories/</span>
+│       ├── <span class="dir">banner/</span>
+│       ├── <span class="dir">categories/</span>
+│       ├── <span class="dir">teams/</span>
+│       ├── <span class="dir">testimonial/</span>
+│       ├── <span class="dir">contact-us/</span>
+│       ├── <span class="dir">service-gallery/</span>
+│       └── <span class="dir">settings/</span>
+│
+├── <span class="dir">api/</span>                            <span class="comment"># REST API routes</span>
+│   ├── <span class="dir">public/</span>                     <span class="comment"># No authentication required</span>
+│   │   ├── <span class="dir">gallery/</span>route.ts
+│   │   ├── <span class="dir">story/</span>route.ts
+│   │   ├── <span class="dir">story/[slug]/</span>route.ts
+│   │   ├── <span class="dir">category/</span>route.ts
+│   │   ├── <span class="dir">banner/</span>route.ts
+│   │   ├── <span class="dir">team/</span>route.ts
+│   │   ├── <span class="dir">testimonial/</span>route.ts
+│   │   ├── <span class="dir">contact-us/</span>route.ts
+│   │   ├── <span class="dir">service-gallery/</span>route.ts
+│   │   ├── <span class="dir">home-section/name/[slug]/</span>route.ts
+│   │   └── <span class="dir">settings/</span>route.ts
+│   └── <span class="dir">admin/</span>                      <span class="comment"># JWT Bearer token required</span>
+│       ├── <span class="dir">auth/</span>                   <span class="comment"># login, me, password</span>
+│       ├── <span class="dir">gallery/</span>                <span class="comment"># CRUD + sort + status</span>
+│       ├── <span class="dir">banner/</span>
+│       ├── <span class="dir">category/</span>
+│       ├── <span class="dir">story/</span>
+│       ├── <span class="dir">team/</span>
+│       ├── <span class="dir">testimonial/</span>
+│       ├── <span class="dir">contact-us/</span>
+│       ├── <span class="dir">service-gallery/</span>
+│       ├── <span class="dir">home-section/</span>
+│       ├── <span class="dir">file/</span>route.ts          <span class="comment"># Cloudinary upload</span>
+│       ├── <span class="dir">settings/</span>               <span class="comment"># general, metadata, cloudinary, terms</span>
+│       └── <span class="dir">dashboard/stats/</span>route.ts
+│
+├── <span class="dir">components/</span>
+│   ├── <span class="dir">ui/</span>                         <span class="comment"># shadcn/ui base components</span>
+│   ├── <span class="dir">features/</span>                   <span class="comment"># Feature-specific sections</span>
+│   │   ├── <span class="dir">landing/</span>                <span class="comment"># Homepage sections</span>
+│   │   ├── <span class="dir">about-us/</span>               <span class="comment"># About page sections</span>
+│   │   ├── <span class="dir">our-works/</span>              <span class="comment"># Gallery display</span>
+│   │   ├── <span class="dir">image-gallery/</span>          <span class="comment"># Full gallery with filter</span>
+│   │   ├── <span class="dir">story/</span>                  <span class="comment"># Story detail sections</span>
+│   │   ├── <span class="dir">contact-us-section/</span>     <span class="comment"># Contact form &amp; info</span>
+│   │   ├── <span class="dir">offer-section/</span>          <span class="comment"># Services section</span>
+│   │   └── <span class="dir">frame-felt/</span>             <span class="comment"># Testimonials carousel</span>
+│   └── <span class="dir">form/</span>                       <span class="comment"># Reusable form fields</span>
+│
+├── <span class="dir">actions/</span>                        <span class="comment"># Next.js Server Actions (by feature)</span>
+├── <span class="dir">model/</span>                          <span class="comment"># Mongoose data models</span>
+│   ├── Gallery.ts, Category.ts, Stories.ts
+│   ├── Banner.ts, Team.ts, User.ts
+│   ├── Testimonial.ts, ContactUs.ts
+│   ├── ServiceGallery.ts, HomeSection.ts
+│   └── Settings.ts
+├── <span class="dir">store/</span>                          <span class="comment"># Zustand state stores</span>
+├── <span class="dir">lib/</span>                            <span class="comment"># Server utilities &amp; helpers</span>
+│   ├── api-client.ts               <span class="comment"># Fetch wrapper with JWT injection</span>
+│   ├── validation-schema.ts        <span class="comment"># All Zod validation schemas</span>
+│   ├── authenticate.ts             <span class="comment"># JWT token verification</span>
+│   └── metadata.ts                 <span class="comment"># SEO metadata helpers</span>
+├── <span class="dir">config/</span>
+│   ├── database.ts                 <span class="comment"># MongoDB connection with caching</span>
+│   └── cloudinary.ts               <span class="comment"># Cloudinary client initialisation</span>
+├── <span class="dir">hooks/</span>                          <span class="comment"># Custom React hooks</span>
+├── <span class="dir">providers/</span>                      <span class="comment"># Auth &amp; dashboard providers</span>
+├── <span class="dir">types/</span>                          <span class="comment"># Global TypeScript types</span>
+├── proxy.ts                        <span class="comment"># NextAuth middleware (route protection)</span>
+├── next.config.ts
+├── tailwind.config.ts
+├── tsconfig.json
+└── package.json</div>
+
+  <!-- ── PAGES & ROUTES ────────────────────────────────────────── -->
+  <h2 id="pages-routes">Pages &amp; Routes</h2>
+
+  <h3>Public Pages</h3>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Route</th><th>Description</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><code>/</code></td><td>Homepage — hero banner, featured gallery, services, testimonials carousel</td></tr>
+        <tr><td><code>/gallery</code></td><td>Full gallery with live category filter tabs</td></tr>
+        <tr><td><code>/about</code></td><td>About page with studio story, team members, why-choose-us</td></tr>
+        <tr><td><code>/stories</code></td><td>Photography stories listing with featured cards</td></tr>
+        <tr><td><code>/stories/[slug]</code></td><td>Story detail with rich content, photo gallery, camera metadata</td></tr>
+        <tr><td><code>/lets-connect</code></td><td>Client inquiry form with category selection</td></tr>
+        <tr><td><code>/admin/login</code></td><td>Admin authentication page</td></tr>
+        <tr><td><code>/documentation</code></td><td>Built-in interactive documentation (this page)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Admin Dashboard Pages (Protected)</h3>
+  <p>All admin routes are under <code>/admin/dashboard/</code> and require a valid authentication session.</p>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Route</th><th>Description</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><code>/admin/dashboard</code></td><td>Overview statistics and quick navigation</td></tr>
+        <tr><td><code>/admin/dashboard/gallery</code></td><td>Upload, sort (drag &amp; drop), and manage photos</td></tr>
+        <tr><td><code>/admin/dashboard/categories</code></td><td>Manage photo categories with auto slug generation</td></tr>
+        <tr><td><code>/admin/dashboard/stories</code></td><td>Stories list with status and featured toggles</td></tr>
+        <tr><td><code>/admin/dashboard/stories/create</code></td><td>Create story with rich text editor and camera specs</td></tr>
+        <tr><td><code>/admin/dashboard/stories/create/[id]</code></td><td>Edit existing story</td></tr>
+        <tr><td><code>/admin/dashboard/banner</code></td><td>Page banners with ordering and status</td></tr>
+        <tr><td><code>/admin/dashboard/teams</code></td><td>Team members with designation and photo</td></tr>
+        <tr><td><code>/admin/dashboard/testimonial</code></td><td>Client testimonials with ordering</td></tr>
+        <tr><td><code>/admin/dashboard/contact-us</code></td><td>View all contact form submissions</td></tr>
+        <tr><td><code>/admin/dashboard/service-gallery</code></td><td>Photography services management</td></tr>
+        <tr><td><code>/admin/dashboard/about-us</code></td><td>About page content management</td></tr>
+        <tr><td><code>/admin/dashboard/settings</code></td><td>General info, SEO metadata, Cloudinary config, terms &amp; policy</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ── AUTHENTICATION ────────────────────────────────────────── -->
+  <h2 id="auth">Authentication</h2>
+  <p>The template uses <strong>NextAuth v5</strong> with a JWT strategy. The middleware in <code>proxy.ts</code> protects all routes under <code>/admin/*</code> and <code>/api/admin/*</code>.</p>
+
+  <h3>Authentication Flow</h3>
+  <ol>
+    <li>Admin submits email and password at <code>/admin/login</code>.</li>
+    <li>Server looks up the user by email and compares the password using <strong>bcrypt</strong>.</li>
+    <li>On success, a JWT access token is returned and stored in the NextAuth session.</li>
+    <li><code>lib/api-client.ts</code> automatically injects the Bearer token into all admin API requests.</li>
+    <li>All <code>/api/admin/*</code> routes verify the token before processing the request.</li>
+    <li>Unauthenticated requests to protected routes are redirected to <code>/admin/login</code>.</li>
+  </ol>
+
+  <div class="callout tip">
+    <strong>✅ Password Security</strong>
+    Passwords are hashed with bcrypt at cost factor 10. Raw passwords are never stored. Password changes require verification of the current password via <code>POST /api/admin/auth/password</code>.
+  </div>
+
+  <!-- ── API PUBLIC ────────────────────────────────────────────── -->
+  <h2 id="api-public">API Reference — Public Endpoints</h2>
+  <p>All API responses use a consistent envelope format:</p>
+  <pre>// Success
+{ "success": true, "statusCode": 200, "message": "...", "data": { ... } }
+
+// Error
+{ "success": false, "statusCode": 400, "message": "...", "errors": [ ... ] }</pre>
+
+  <h3>Gallery</h3>
+  <div class="endpoint">
+    <div class="endpoint-header">
+      <span class="method get">GET</span>
+      <span class="endpoint-path">/api/public/gallery</span>
+    </div>
+    <p class="endpoint-desc">Returns gallery items. Supports <code>category</code> (slug), <code>featured</code> (boolean), <code>page</code>, and <code>limit</code> query parameters.</p>
+  </div>
+
+  <h3>Stories</h3>
+  <div class="endpoint">
+    <div class="endpoint-header">
+      <span class="method get">GET</span>
+      <span class="endpoint-path">/api/public/story</span>
+    </div>
+    <p class="endpoint-desc">Returns featured stories for homepage display.</p>
+  </div>
+  <div class="endpoint">
+    <div class="endpoint-header">
+      <span class="method get">GET</span>
+      <span class="endpoint-path">/api/public/story/[slug]</span>
+    </div>
+    <p class="endpoint-desc">Returns a single story by its URL slug.</p>
+  </div>
+  <div class="endpoint">
+    <div class="endpoint-header">
+      <span class="method get">GET</span>
+      <span class="endpoint-path">/api/public/story/more/[slug]</span>
+    </div>
+    <p class="endpoint-desc">Returns related stories for the "More Stories" section on a story detail page.</p>
+  </div>
+
+  <h3>Categories &amp; Other Public Endpoints</h3>
+  <div class="endpoint">
+    <div class="endpoint-header"><span class="method get">GET</span><span class="endpoint-path">/api/public/category</span></div>
+    <p class="endpoint-desc">Returns all active categories ordered by position.</p>
+  </div>
+  <div class="endpoint">
+    <div class="endpoint-header"><span class="method get">GET</span><span class="endpoint-path">/api/public/banner</span></div>
+    <p class="endpoint-desc">Returns all active page banners ordered by position.</p>
+  </div>
+  <div class="endpoint">
+    <div class="endpoint-header"><span class="method get">GET</span><span class="endpoint-path">/api/public/team</span></div>
+    <p class="endpoint-desc">Returns all active team members.</p>
+  </div>
+  <div class="endpoint">
+    <div class="endpoint-header"><span class="method get">GET</span><span class="endpoint-path">/api/public/testimonial</span></div>
+    <p class="endpoint-desc">Returns all active testimonials ordered by position.</p>
+  </div>
+  <div class="endpoint">
+    <div class="endpoint-header"><span class="method get">GET</span><span class="endpoint-path">/api/public/service-gallery</span></div>
+    <p class="endpoint-desc">Returns all active service gallery items.</p>
+  </div>
+  <div class="endpoint">
+    <div class="endpoint-header"><span class="method post">POST</span><span class="endpoint-path">/api/public/contact-us</span></div>
+    <p class="endpoint-desc">Submit a contact form inquiry.</p>
+    <pre>{ "name": "Alice Johnson", "email": "alice@example.com",
+  "phone": "+1234567890", "message": "I'm interested in wedding photography.",
+  "category": "Wedding" }</pre>
+  </div>
+  <div class="endpoint">
+    <div class="endpoint-header"><span class="method get">GET</span><span class="endpoint-path">/api/public/settings</span></div>
+    <p class="endpoint-desc">Returns public site settings (company info, social links, SEO metadata).</p>
+  </div>
+  <div class="endpoint">
+    <div class="endpoint-header"><span class="method get">GET</span><span class="endpoint-path">/api/public/home-section/name/[slug]</span></div>
+    <p class="endpoint-desc">Returns a specific home page section by its slug key (e.g. <code>hero</code>, <code>about</code>, <code>services</code>).</p>
+  </div>
+
+  <!-- ── API ADMIN AUTH ────────────────────────────────────────── -->
+  <h2 id="api-admin-auth">API Reference — Admin Authentication</h2>
+  <div class="callout">
+    All admin management endpoints require: <code>Authorization: Bearer &lt;token&gt;</code>
+  </div>
+
+  <div class="endpoint">
+    <div class="endpoint-header"><span class="method post">POST</span><span class="endpoint-path">/api/admin/auth/login</span></div>
+    <p class="endpoint-desc">Authenticates an admin user and returns a JWT token.</p>
+    <pre>// Request
+{ "email": "admin@example.com", "password": "your_password" }
+
+// Response
+{
+  "success": true,
+  "data": {
+    "token": "eyJhbGci...",
+    "user": { "name": "Admin", "email": "admin@example.com", "role": "admin" }
+  }
+}</pre>
+  </div>
+
+  <div class="endpoint">
+    <div class="endpoint-header"><span class="method get">GET</span><span class="endpoint-path">/api/admin/auth/me</span></div>
+    <p class="endpoint-desc">Returns the currently authenticated admin's profile. Requires Bearer token.</p>
+  </div>
+
+  <div class="endpoint">
+    <div class="endpoint-header"><span class="method post">POST</span><span class="endpoint-path">/api/admin/auth/password</span></div>
+    <p class="endpoint-desc">Changes the admin password. Requires Bearer token.</p>
+    <pre>{ "currentPassword": "old_password", "newPassword": "new_password" }</pre>
+  </div>
+
+  <!-- ── API GALLERY ───────────────────────────────────────────── -->
+  <h2 id="api-gallery">API Reference — Gallery</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Method</th><th>Endpoint</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><span class="method post">POST</span></td><td><code>/api/admin/gallery</code></td><td>Create a new gallery item</td></tr>
+        <tr><td><span class="method get">GET</span></td><td><code>/api/admin/gallery</code></td><td>List all gallery items (paginated)</td></tr>
+        <tr><td><span class="method put">PUT</span></td><td><code>/api/admin/gallery/[id]</code></td><td>Update gallery item by ID</td></tr>
+        <tr><td><span class="method delete">DELETE</span></td><td><code>/api/admin/gallery/[id]</code></td><td>Delete gallery item by ID</td></tr>
+        <tr><td><span class="method patch">PATCH</span></td><td><code>/api/admin/gallery/status/[id]</code></td><td>Toggle active status / featured flag</td></tr>
+        <tr><td><span class="method post">POST</span></td><td><code>/api/admin/gallery/sort</code></td><td>Reorder gallery items</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <pre>// Create Gallery Item — Request Body
+{
+  "image": "https://res.cloudinary.com/...",
+  "title": "Golden Hour Portrait",
+  "author": "Jane Smith",
+  "category": "portrait",
+  "status": true,
+  "isFeatured": false
+}
+
+// Sort — Request Body
+{ "items": [{ "id": "item_id", "orderBy": 1 }, ...] }</pre>
+
+  <!-- ── API CATEGORIES ────────────────────────────────────────── -->
+  <h2 id="api-categories">API Reference — Categories</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Method</th><th>Endpoint</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><span class="method post">POST</span></td><td><code>/api/admin/category</code></td><td>Create category</td></tr>
+        <tr><td><span class="method get">GET</span></td><td><code>/api/admin/category</code></td><td>List all categories</td></tr>
+        <tr><td><span class="method put">PUT</span></td><td><code>/api/admin/category/[id]</code></td><td>Update category</td></tr>
+        <tr><td><span class="method delete">DELETE</span></td><td><code>/api/admin/category/[id]</code></td><td>Delete category</td></tr>
+        <tr><td><span class="method patch">PATCH</span></td><td><code>/api/admin/category/status/[id]</code></td><td>Toggle status</td></tr>
+        <tr><td><span class="method post">POST</span></td><td><code>/api/admin/category/sort</code></td><td>Reorder categories</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <pre>// Create Category — Request Body
+{
+  "name": "Portrait",
+  "slug": "portrait",
+  "status": true,
+  "featured": false,
+  "parent": null  // ObjectId for sub-category, null for root
+}</pre>
+
+  <!-- ── API STORIES ───────────────────────────────────────────── -->
+  <h2 id="api-stories">API Reference — Stories</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Method</th><th>Endpoint</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><span class="method post">POST</span></td><td><code>/api/admin/story</code></td><td>Create a story</td></tr>
+        <tr><td><span class="method get">GET</span></td><td><code>/api/admin/story</code></td><td>List all stories (paginated)</td></tr>
+        <tr><td><span class="method put">PUT</span></td><td><code>/api/admin/story/[id]</code></td><td>Update story</td></tr>
+        <tr><td><span class="method delete">DELETE</span></td><td><code>/api/admin/story/[id]</code></td><td>Delete story</td></tr>
+        <tr><td><span class="method patch">PATCH</span></td><td><code>/api/admin/story/status/[id]</code></td><td>Toggle status / featured</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <pre>// Create Story — Request Body
+{
+  "title": "Golden Sunset Wedding",
+  "slug": "golden-sunset-wedding",
+  "description": "&lt;p&gt;Rich HTML content from SunEditor...&lt;/p&gt;",
+  "image": "https://res.cloudinary.com/...",
+  "photos": ["url1", "url2"],
+  "client": "Sarah &amp; James",
+  "photographer": "Jane Smith",
+  "mood": "Romantic",
+  "category": ["categoryObjectId"],
+  "camera": "Sony A7R IV",
+  "shutterSpeed": "1/500s",
+  "lensUsed": "85mm f/1.4",
+  "focus": ["Natural light", "Bokeh"],
+  "approach": ["Candid moments", "Golden hour"],
+  "eventDate": "2024-06-15",
+  "isFeatured": true,
+  "status": true
+}</pre>
+
+  <!-- ── API BANNER ────────────────────────────────────────────── -->
+  <h2 id="api-banner">API Reference — Banner</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Method</th><th>Endpoint</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><span class="method post">POST</span></td><td><code>/api/admin/banner</code></td><td>Create a new banner</td></tr>
+        <tr><td><span class="method get">GET</span></td><td><code>/api/admin/banner</code></td><td>List all banners</td></tr>
+        <tr><td><span class="method put">PUT</span></td><td><code>/api/admin/banner/[id]</code></td><td>Update banner by ID</td></tr>
+        <tr><td><span class="method delete">DELETE</span></td><td><code>/api/admin/banner/[id]</code></td><td>Delete banner by ID</td></tr>
+        <tr><td><span class="method patch">PATCH</span></td><td><code>/api/admin/banner/status/[id]</code></td><td>Toggle active status</td></tr>
+        <tr><td><span class="method post">POST</span></td><td><code>/api/admin/banner/sort</code></td><td>Reorder banners</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <pre>// Create Banner — Request Body
+{
+  "sectionName": "gallery-hero",
+  "heading": "Our Photography",
+  "shortDesc": "Capturing moments that last a lifetime",
+  "categories": "Wedding, Portrait",
+  "position": 1,
+  "status": true
+}</pre>
+
+  <!-- ── API TEAM ──────────────────────────────────────────────── -->
+  <h2 id="api-team">API Reference — Team</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Method</th><th>Endpoint</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><span class="method post">POST</span></td><td><code>/api/admin/team</code></td><td>Create team member</td></tr>
+        <tr><td><span class="method get">GET</span></td><td><code>/api/admin/team</code></td><td>List all team members</td></tr>
+        <tr><td><span class="method put">PUT</span></td><td><code>/api/admin/team/[id]</code></td><td>Update team member</td></tr>
+        <tr><td><span class="method delete">DELETE</span></td><td><code>/api/admin/team/[id]</code></td><td>Delete team member</td></tr>
+        <tr><td><span class="method patch">PATCH</span></td><td><code>/api/admin/team/status/[id]</code></td><td>Toggle status</td></tr>
+        <tr><td><span class="method post">POST</span></td><td><code>/api/admin/team/sort</code></td><td>Reorder team</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <pre>// Create Team Member — Request Body
+{
+  "name": "Jane Smith",
+  "designation": "Lead Photographer",
+  "image": "https://res.cloudinary.com/...",
+  "status": true
+}</pre>
+
+  <!-- ── API TESTIMONIAL ───────────────────────────────────────── -->
+  <h2 id="api-testimonial">API Reference — Testimonial</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Method</th><th>Endpoint</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><span class="method post">POST</span></td><td><code>/api/admin/testimonial</code></td><td>Create testimonial</td></tr>
+        <tr><td><span class="method get">GET</span></td><td><code>/api/admin/testimonial</code></td><td>List all testimonials</td></tr>
+        <tr><td><span class="method put">PUT</span></td><td><code>/api/admin/testimonial/[id]</code></td><td>Update testimonial</td></tr>
+        <tr><td><span class="method delete">DELETE</span></td><td><code>/api/admin/testimonial/[id]</code></td><td>Delete testimonial</td></tr>
+        <tr><td><span class="method patch">PATCH</span></td><td><code>/api/admin/testimonial/status/[id]</code></td><td>Toggle status</td></tr>
+        <tr><td><span class="method post">POST</span></td><td><code>/api/admin/testimonial/sort</code></td><td>Reorder testimonials</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <pre>// Create Testimonial — Request Body
+{
+  "quote": "The photos were absolutely stunning. Highly recommended!",
+  "authorName": "Sarah Johnson",
+  "authorRole": "Wedding Client",
+  "order": 1,
+  "status": true
+}</pre>
+
+  <!-- ── API CONTACT ───────────────────────────────────────────── -->
+  <h2 id="api-contact">API Reference — Contact</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Method</th><th>Endpoint</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><span class="method get">GET</span></td><td><code>/api/admin/contact-us</code></td><td>List all contact submissions</td></tr>
+        <tr><td><span class="method delete">DELETE</span></td><td><code>/api/admin/contact-us</code></td><td>Delete submission(s)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ── API SERVICES ──────────────────────────────────────────── -->
+  <h2 id="api-services">API Reference — Service Gallery</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Method</th><th>Endpoint</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><span class="method post">POST</span></td><td><code>/api/admin/service-gallery</code></td><td>Create service</td></tr>
+        <tr><td><span class="method get">GET</span></td><td><code>/api/admin/service-gallery</code></td><td>List all services</td></tr>
+        <tr><td><span class="method put">PUT</span></td><td><code>/api/admin/service-gallery/[id]</code></td><td>Update service</td></tr>
+        <tr><td><span class="method delete">DELETE</span></td><td><code>/api/admin/service-gallery/[id]</code></td><td>Delete service</td></tr>
+        <tr><td><span class="method patch">PATCH</span></td><td><code>/api/admin/service-gallery/status/[id]</code></td><td>Toggle status</td></tr>
+        <tr><td><span class="method post">POST</span></td><td><code>/api/admin/service-gallery/sort</code></td><td>Reorder services</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <pre>// Create Service — Request Body
+{
+  "heading": "Wedding Photography",
+  "shortDesc": "Timeless wedding moments captured with elegance.",
+  "image": "https://res.cloudinary.com/...",
+  "position": 1,
+  "status": true
+}</pre>
+
+  <!-- ── API HOME SECTIONS ─────────────────────────────────────── -->
+  <h2 id="api-home">API Reference — Home Sections</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Method</th><th>Endpoint</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><span class="method get">GET</span></td><td><code>/api/admin/home-section</code></td><td>List all home sections</td></tr>
+        <tr><td><span class="method post">POST</span></td><td><code>/api/admin/home-section</code></td><td>Create home section</td></tr>
+        <tr><td><span class="method get">GET</span></td><td><code>/api/admin/home-section/name/[slug]</code></td><td>Get section by key</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p><strong>Section Keys:</strong> <code>hero</code>, <code>about</code>, <code>services</code>, <code>gallery</code>, <code>testimonials</code>, <code>cta</code></p>
+
+  <!-- ── API FILE UPLOAD ───────────────────────────────────────── -->
+  <h2 id="api-file">API Reference — File Upload</h2>
+
+  <div class="endpoint">
+    <div class="endpoint-header"><span class="method post">POST</span><span class="endpoint-path">/api/admin/file</span></div>
+    <p class="endpoint-desc">Upload a file to Cloudinary. Request must use <code>multipart/form-data</code>. Requires Bearer token.</p>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Field</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><code>file</code></td><td>File</td><td>Yes</td><td>Image file (JPEG, PNG, WebP, AVIF — max 20 MB)</td></tr>
+        <tr><td><code>folder</code></td><td>string</td><td>No</td><td>Cloudinary subfolder name</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <pre>// Response
+{
+  "success": true,
+  "url": "https://res.cloudinary.com/your-cloud/image/upload/v1234/folder/file.jpg",
+  "publicId": "folder/file"
+}</pre>
+
+  <!-- ── API SETTINGS ──────────────────────────────────────────── -->
+  <h2 id="api-settings">API Reference — Settings</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Method</th><th>Endpoint</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><span class="method get">GET</span></td><td><code>/api/admin/settings</code></td><td>Fetch all settings</td></tr>
+        <tr><td><span class="method post">POST</span></td><td><code>/api/admin/settings/general</code></td><td>Update general settings (company info, social links)</td></tr>
+        <tr><td><span class="method post">POST</span></td><td><code>/api/admin/settings/metadata</code></td><td>Update SEO metadata (title, description, keywords, OG image)</td></tr>
+        <tr><td><span class="method post">POST</span></td><td><code>/api/admin/settings/cloudinary</code></td><td>Update Cloudinary configuration</td></tr>
+        <tr><td><span class="method post">POST</span></td><td><code>/api/admin/settings/page-banner</code></td><td>Update per-page banner settings</td></tr>
+        <tr><td><span class="method post">POST</span></td><td><code>/api/admin/settings/terms</code></td><td>Update terms &amp; privacy policy (HTML content)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ── API DASHBOARD ─────────────────────────────────────────── -->
+  <h2 id="api-dashboard">API Reference — Dashboard Stats</h2>
+  <div class="endpoint">
+    <div class="endpoint-header"><span class="method get">GET</span><span class="endpoint-path">/api/admin/dashboard/stats</span></div>
+    <p class="endpoint-desc">Returns aggregate counts for the dashboard overview. Requires Bearer token.</p>
+    <pre>// Response
+{
+  "success": true,
+  "data": {
+    "gallery": 124,
+    "stories": 18,
+    "contacts": 45,
+    "teams": 6,
+    "testimonials": 12
+  }
+}</pre>
+  </div>
+
+  <!-- ── DATABASE MODELS ───────────────────────────────────────── -->
+  <h2 id="db-models">Database Models</h2>
+
+  <h3>User</h3>
+  <pre>{ name: String, email: String (unique), password: String (bcrypt), role: "admin" | "user" }</pre>
+
+  <h3>Gallery</h3>
+  <pre>{ image: String, title: String, author: String, category: String,
+  status: Boolean, isFeatured: Boolean, orderBy: Number }</pre>
+
+  <h3>Category</h3>
+  <pre>{ name: String, slug: String (unique), status: Boolean, featured: Boolean,
+  position: Number, parent: ObjectId (nullable) }</pre>
+
+  <h3>Stories</h3>
+  <pre>{ title: String, slug: String (unique), description: String (HTML),
+  image: String, photos: [String], client: String, photographer: String,
+  mood: String, category: [ObjectId], camera: String, shutterSpeed: String,
+  lensUsed: String, focus: [String], approach: [String],
+  eventDate: Date, isFeatured: Boolean, status: Boolean }</pre>
+
+  <h3>Team</h3>
+  <pre>{ name: String, designation: String, image: String, status: Boolean }</pre>
+
+  <h3>Testimonial</h3>
+  <pre>{ quote: String, authorName: String, authorRole: String, order: Number, status: Boolean }</pre>
+
+  <h3>ContactUs</h3>
+  <pre>{ name: String, email: String, phone: String, message: String, category: String, status: Boolean }</pre>
+
+  <h3>ServiceGallery</h3>
+  <pre>{ heading: String, shortDesc: String, image: String, position: Number, status: Boolean }</pre>
+
+  <h3>Settings (single document)</h3>
+  <pre>{ general: { companyName, companyPhone, companyAddress, supportEmail, ownerName, ownerEmail,
+              logo, favicon, facebook, instagram, twitter, youtube },
+  cloudinary: { cloudName, apiKey, apiSecret, folder, secureUrlBase },
+  metadata:   { title, applicationName, description, keywords: [String], openGraphImage },
+  termsPolicy:{ terms: String (HTML), policy: String (HTML) },
+  businessHours: [{ dayOfWeek: 0-6, openTime: Number, closeTime: Number, isClosed: Boolean }] }</pre>
+
+  <!-- ── IMAGE MANAGEMENT ──────────────────────────────────────── -->
+  <h2 id="image-mgmt">Image Management</h2>
+
+  <h3>Upload Flow</h3>
+  <ol>
+    <li>Admin selects file(s) in any dashboard form.</li>
+    <li>Frontend sends the file to <code>POST /api/admin/file</code>.</li>
+    <li>Server streams the file to Cloudinary via <code>upload_stream</code>.</li>
+    <li>Cloudinary returns a secure CDN URL.</li>
+    <li>The URL is stored in the MongoDB document field.</li>
+  </ol>
+
+  <h3>Cloudinary Configuration</h3>
+  <p>Credentials are loaded <strong>dynamically</strong> from the <code>Settings</code> database document — not from environment variables. This enables live configuration changes from the admin dashboard without redeployment.</p>
+  <p>To configure: Log in → <strong>Admin → Settings → Cloudinary</strong> → enter Cloud Name, API Key, API Secret, and folder name → Save.</p>
+
+  <div class="callout tip">
+    <strong>✅ Supported Formats</strong>
+    JPEG, PNG, WebP, AVIF, GIF. Maximum file size is <strong>20 MB</strong>, set via <code>serverActions.bodySizeLimit</code> in <code>next.config.ts</code>.
+  </div>
+
+  <!-- ── DEPLOYMENT ────────────────────────────────────────────── -->
+  <h2 id="deployment">Deployment Guide</h2>
+
+  <h3>Vercel (Recommended)</h3>
+  <pre># 1. Push your project to a GitHub repository
+git push origin main
+
+# 2. Import at vercel.com → New Project → select your repo
+# 3. Add environment variables in Vercel project settings
+# 4. Deploy — Vercel rebuilds automatically on every push</pre>
+
+  <h3>Self-Hosted (Node.js)</h3>
+  <pre># Build the application
+npm run build
+
+# Start production server (runs on port 3000)
+npm start</pre>
+
+  <h3>Nginx Reverse Proxy</h3>
+  <pre>server {
+    listen 80;
+    server_name yourdomain.com;
+
+    location / {
+        proxy_pass http://localhost:3000;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+    }
+}</pre>
+
+  <div class="callout tip">
+    <strong>✅ Production Checklist</strong>
+    Update <code>NEXTAUTH_URL</code> and <code>NEXT_PUBLIC_BASE_URL</code> to your production domain. Set <code>AUTH_TRUST_HOST=true</code> when running behind a proxy or on Vercel. Use a strong, random <code>NEXTAUTH_SECRET</code> (minimum 32 characters).
+  </div>
+
+  <!-- ── CHANGELOG ─────────────────────────────────────────────── -->
+  <h2 id="changelog">Changelog</h2>
+
+  <h3>v1.0.0 — Initial Release</h3>
+  <ul>
+    <li>Full photography portfolio with public website and admin CMS</li>
+    <li>MongoDB + Mongoose database layer with serverless-optimised connection pooling</li>
+    <li>Cloudinary dynamic image hosting (credentials managed from admin panel)</li>
+    <li>NextAuth v5 JWT authentication with bcrypt password hashing</li>
+    <li>Gallery with category filtering and drag-and-drop reordering</li>
+    <li>Stories / blog module with SunEditor rich text, multi-photo upload, and camera metadata</li>
+    <li>Team, testimonial, banner, and service gallery management</li>
+    <li>Site settings: general info, SEO metadata, Cloudinary, page banners, terms &amp; policy</li>
+    <li>Contact form with admin review and delete interface</li>
+    <li>Built-in documentation page at <code>/documentation</code></li>
+    <li>Full TypeScript coverage with Zod schema validation on all API routes</li>
+    <li>Tag-based Next.js cache invalidation for instant content updates</li>
+  </ul>
+
+  <div class="doc-footer">
+    <p>Photography Portfolio &amp; CMS — Documentation v1.0.0</p>
+  </div>
+
+</main>
+
+<script>
+  // Active nav link highlighting on scroll
+  const sections = document.querySelectorAll('h2[id]');
+  const navLinks = document.querySelectorAll('.sidebar nav a');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navLinks.forEach(link => {
+          link.classList.remove('active');
+          if (link.getAttribute('href') === '#' + entry.target.id) {
+            link.classList.add('active');
+            // Keep active link visible in sidebar
+            const sidebar = document.querySelector('.sidebar');
+            const linkRect = link.getBoundingClientRect();
+            const sidebarRect = sidebar.getBoundingClientRect();
+            if (linkRect.top < sidebarRect.top + 40 || linkRect.bottom > sidebarRect.bottom - 40) {
+              link.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+            }
+          }
+        });
+      }
+    });
+  }, { rootMargin: '-10% 0px -80% 0px' });
+
+  sections.forEach(s => observer.observe(s));
+
+  // Smooth scroll
+  navLinks.forEach(link => {
+    link.addEventListener('click', e => {
+      e.preventDefault();
+      const id = link.getAttribute('href').replace('#', '');
+      const target = document.getElementById(id);
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+</script>
+</body>
+</html>

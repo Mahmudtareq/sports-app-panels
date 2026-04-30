@@ -1,0 +1,23 @@
+{
+  "workbench.colorTheme": "Learn with Sumit - Peace of the eye",
+  "workbench.colorCustomizations": {
+    "[Monokai]": {
+      "sideBar.background": "#3b03a3e5",
+      "activityBar.background": "#3b03a3e5",
+      "sideBar.foreground": "#e7e7e7"
+    }
+  },
+  "glassit.alpha": 0.85,
+  "glassit.blur": true,
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": "explicit",
+    "source.fixAll": "explicit"
+  },
+
+  "css.lint.unknownAtRules": "ignore",
+  "tailwindCSS.experimental.classRegex": [
+    ["cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"],
+    ["cx\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)"]
+  ],
+  "tailwindCSS.classAttributes": ["class", "className", ".*Classes.*"]
+}

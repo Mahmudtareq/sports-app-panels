@@ -1,0 +1,284 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/* Inline theme variables */
+@theme inline {
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-urbanist: var(--font-urbanist);
+  --font-dm-sans: var(--font-dm-sans);
+  --font-mono: var(--font-geist-mono);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+/* Light mode */
+:root {
+  --primary: #ff642b;
+  --primary-foreground: #1a1a1a;
+  --background: #f0f0f0;
+  --foreground: #1a1a1a;
+  --radius: 0.625rem;
+
+  --card: #ffffff;
+  --card-foreground: #1a1a1a;
+
+  --popover: #ffffff;
+  --popover-foreground: #1a1a1a;
+
+  --secondary: #ff642b33;
+  --secondary-foreground: #ff642b;
+
+  --muted: #f5f5f5;
+  --muted-foreground: #888888;
+
+  --accent: #ff642b;
+  --accent-foreground: #ffffff;
+
+  --destructive: #ff4d4f;
+  --border: #e5e5e5;
+  --input: #f0f0f0;
+  --ring: #ff642b33;
+
+  --chart-1: #ff642b;
+  --chart-2: #ff642b99;
+  --chart-3: #ff642b66;
+  --chart-4: #ff642b33;
+  --chart-5: #ff642b1a;
+
+  --sidebar: #ffffff;
+  --sidebar-foreground: #1a1a1a;
+  --sidebar-primary: #ff642b;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #ff642b;
+  --sidebar-accent-foreground: #ffffff;
+  --sidebar-border: #e5e5e5;
+  --sidebar-ring: #ff642b33;
+}
+
+/* Dark mode */
+.dark {
+  --primary: #ff642b;
+  --primary-foreground: #ffffff;
+  --background: #1a1a1a;
+  --foreground: #ddd;
+
+  --card: #2a2a2a;
+  --card-foreground: #ffffff;
+
+  --popover: #2a2a2a;
+  --popover-foreground: #ffffff;
+
+  --secondary: #ffbfa8;
+  --secondary-foreground: #ff642b;
+
+  --muted: #333333;
+  --muted-foreground: #bbbbbb;
+
+  --accent: #ff642b;
+  --accent-foreground: #ffffff;
+
+  --destructive: #ff4d4f;
+  --border: #444444;
+  --input: #333333;
+  --ring: #ff642b66;
+
+  --chart-1: #ff642b;
+  --chart-2: #ff642b99;
+  --chart-3: #ff642b66;
+  --chart-4: #ff642b33;
+  --chart-5: #ff642b1a;
+
+  --sidebar: #2a2a2a;
+  --sidebar-foreground: #ffffff;
+  --sidebar-primary: #ff642b;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #ff642b;
+  --sidebar-accent-foreground: #ffffff;
+  --sidebar-border: #444444;
+  --sidebar-ring: #ff642b66;
+}
+
+/* Base styles */
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    @apply bg-[#F0F0F0] text-foreground;
+  }
+
+  /* Headings: Urbanist *
+
+  /* Paragraphs: DM Sans */
+
+  /* Custom paragraph classes */
+  .p-text-14 {
+    font-family: var(--font-dm-sans);
+    font-weight: 400;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+  }
+  .p-text-15 {
+    font-family: var(--font-dm-sans);
+    font-weight: 400;
+    font-size: 0.9375rem;
+    line-height: 1.25rem;
+  }
+  .p-text-16 {
+    font-family: var(--font-dm-sans);
+    font-weight: 400;
+    font-size: 1rem;
+    line-height: 1.5rem;
+  }
+  .p-text-18 {
+    font-family: var(--font-dm-sans);
+    font-weight: 500;
+    font-size: 1.125rem;
+    line-height: 1.5rem;
+  }
+  .p-text-20 {
+    font-family: var(--font-dm-sans);
+    font-weight: 400;
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+  }
+
+  .counter-text {
+    font-family: var(--font-dm-sans);
+    font-weight: 600;
+    font-size: 1.875rem;
+    line-height: 2rem;
+  }
+
+  /* Navigation & Footer */
+  .nav-logo {
+    font-family: var(--font-urbanist);
+    font-weight: 900;
+    font-size: 1.25rem;
+    text-transform: uppercase;
+  }
+  .nav-text-2 {
+    font-family: var(--font-urbanist);
+    font-weight: 600;
+    font-size: 0.875rem;
+    line-height: 1.5rem;
+  }
+  .footer-text {
+    font-family: var(--font-urbanist);
+    font-weight: 500;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    color: #f7f8fa;
+    opacity: 0.6;
+    transition: opacity 0.5s ease-in-out;
+  }
+
+  /* Services headings */
+  .h1-text {
+    font-family: var(--font-urbanist);
+    font-weight: 700;
+    font-size: 3rem;
+    line-height: 1.2;
+  }
+  .h1-text-services {
+    font-family: var(--font-urbanist);
+    font-weight: 700;
+    font-size: 2rem;
+    line-height: 1.2;
+  }
+  .h2-text {
+    font-family: var(--font-urbanist);
+    font-weight: 600;
+    font-size: 1.5rem;
+    line-height: 1.25;
+  }
+}
+
+/* Utilities for Tailwind usage */
+@layer utilities {
+  .font-dmSans {
+    font-family: var(--font-dm-sans);
+  }
+  .font-urbanist {
+    font-family: var(--font-urbanist);
+  }
+
+  /* DM Sans font-weight utilities */
+  .dmSans-regular {
+    font-family: var(--font-dm-sans);
+    font-weight: 400;
+  }
+  .dmSans-medium {
+    font-family: var(--font-dm-sans);
+    font-weight: 500;
+  }
+  .dmSans-semibold {
+    font-family: var(--font-dm-sans);
+    font-weight: 600;
+  }
+  .dmSans-bold {
+    font-family: var(--font-dm-sans);
+    font-weight: 700;
+  }
+  .dmSans-extrabold {
+    font-family: var(--font-dm-sans);
+    font-weight: 900;
+  }
+
+  /* Urbanist font-weight utilities */
+  .urbanist-regular {
+    font-family: var(--font-urbanist);
+    font-weight: 400;
+  }
+  .urbanist-medium {
+    font-family: var(--font-urbanist);
+    font-weight: 500;
+  }
+  .urbanist-semibold {
+    font-family: var(--font-urbanist);
+    font-weight: 600;
+  }
+  .urbanist-bold {
+    font-family: var(--font-urbanist);
+    font-weight: 700;
+  }
+  .urbanist-extrabold {
+    font-family: var(--font-urbanist);
+    font-weight: 900;
+  }
+}
