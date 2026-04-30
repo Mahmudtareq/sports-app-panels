@@ -18,28 +18,7 @@ export const routes = {
     admin: {
       dashboard: "/admin/dashboard",
       settings: `/admin/dashboard/settings`,
-      banner: {
-        home: "/admin/dashboard/banner",
-        create: "/admin/dashboard/banner/create",
-        edit: (id: string) => `/admin/dashboard/banner/edit/${id}`,
-      },
-      categories: `/admin/dashboard/categories`,
-      aboutUs: `/admin/dashboard/about-us`,
-      stories: {
-        home: `/admin/dashboard/stories`,
-        create: "/admin/dashboard/stories/create",
-        edit: (id: string) => `/admin/dashboard/stories/create/${id}`,
-      },
-      teams: `/admin/dashboard/teams`,
-      contactUs: `/admin/dashboard/contact-us`,
-      serviceGallery: `/admin/dashboard/service-gallery`,
-      showcase: {
-        aboutUs: "/admin/dashboard/about-us",
-        aboutUsShowcase: "/admin/dashboard/about-showcase",
-        whyChooseUsShowcase: "/admin/dashboard/why-choose",
-      },
-      testimonial: `/admin/dashboard/testimonial`,
-      gallery: `/admin/dashboard/gallery`,
+      subscription: `/admin/dashboard/subscription`,
     },
   },
 };

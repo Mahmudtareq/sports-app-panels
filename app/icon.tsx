@@ -27,7 +27,7 @@ export default async function Icon() {
         height: "100%",
         alignItems: "center",
         justifyContent: "center",
-        // background: "#000000",
+        background: "#111111",
       }}
     >
       {/* Only render img if favicon is a valid absolute URL */}
@@ -43,7 +43,7 @@ export default async function Icon() {
             fontFamily: "sans-serif",
           }}
         >
-          PH
+          XS
         </div>
       )}
     </div>,

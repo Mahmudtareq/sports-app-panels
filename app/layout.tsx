@@ -17,8 +17,8 @@ const urbanist = Urbanist({
 });
 
 export const metadata: Metadata = {
-  title: "Photography",
-  description: "Photography",
+  title: "Xoom Sports",
+  description: "Xoom Sports",
 };
 
 export default function RootLayout({
