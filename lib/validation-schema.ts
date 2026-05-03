@@ -327,30 +327,14 @@ export const updateTestimonialValidationSchema = z.object({
     .optional(),
 });
 
-//!contact us validation schema
-export const createContactusSchema = z.object({
-  name: z.string({ error: "Name is required" }).min(1, "Name cannot be empty"),
-
-  email: z
-    .string({ error: "Email is required" })
-    .email("Invalid email address")
-    .transform((val) => val.toLowerCase()),
+//!subscribe validation schema
+export const createSubscribeSchema = z.object({
   phone: z.string().optional(),
-  message: z.string().optional(),
   category: z.string().optional(),
 
   status: z.boolean().optional(), // default mongoose handle করবে
 });
-export const updateContactusSchema = z.object({
-  name: z.string().min(1, "Name cannot be empty").optional(),
-
-  email: z
-    .string()
-    .email("Invalid email address")
-    .transform((val) => val.toLowerCase())
-    .optional(),
-
-  message: z.string().optional(),
+export const updateSubscribeSchema = z.object({
   phone: z.string().optional(),
   status: z.boolean().optional(),
 });

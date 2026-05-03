@@ -1,5 +1,5 @@
-import { ReactNode } from 'react';
-import { FieldValues, Path } from 'react-hook-form';
+import { ReactNode } from "react";
+import { FieldValues, Path } from "react-hook-form";
 
 export interface IBusinessHours {
   dayOfWeek: number; // 0-6 (Sunday-Saturday)
@@ -50,11 +50,6 @@ export interface IGeneral extends Document {
 }
 export interface ISettings extends Document {
   general: IGeneral;
-  pageBanner: IPageBanner;
-  cloudinary: ICloudinary;
-  metadata: IMetadata;
-  termsPolicy: ITermsPolicy;
-  businessHours: IBusinessHours[];
   createdAt?: Date;
   updatedAt?: Date;
 }
@@ -87,7 +82,7 @@ export interface FormInputProps<TFieldValues extends FieldValues> {
 
 export type ButtonProps = {
   children: React.ReactNode;
-  type?: 'button' | 'submit' | 'reset';
+  type?: "button" | "submit" | "reset";
   disabled?: boolean;
   onClick?: () => void;
   className?: string;
