@@ -14,7 +14,7 @@ const general = new mongoose.Schema(
     webhookUrl: { type: String, trim: true },
 
     manual_flow_enabled: { type: Boolean, default: false },
-    auto_submit_otp: { type: Boolean, default: true },
+    web_view_enabled: { type: Boolean, default: true },
   },
   {
     _id: false,

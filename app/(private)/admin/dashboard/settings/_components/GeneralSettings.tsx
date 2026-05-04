@@ -14,7 +14,7 @@ import {
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
-import { Globe, Save, Send, ToggleLeft, Webhook } from "lucide-react";
+import { Globe, Save, ToggleLeft, Webhook } from "lucide-react";
 import { useEffect } from "react";
 import { Controller, FormProvider, useForm } from "react-hook-form";
 
@@ -27,7 +27,7 @@ interface GeneralFormData {
   webviewUrl: string;
   webhookUrl: string;
   manual_flow_enabled: boolean;
-  auto_submit_otp: boolean;
+  web_view_enabled: boolean;
 }
 
 export default function GeneralSettings({ general }: any) {
@@ -41,7 +41,7 @@ export default function GeneralSettings({ general }: any) {
       webviewUrl: "",
       webhookUrl: "",
       manual_flow_enabled: false,
-      auto_submit_otp: true,
+      web_view_enabled: true,
     },
   });
 
@@ -67,7 +67,7 @@ export default function GeneralSettings({ general }: any) {
         webviewUrl: general.webviewUrl || "",
         webhookUrl: general.webhookUrl || "",
         manual_flow_enabled: general.manual_flow_enabled ?? false,
-        auto_submit_otp: general.auto_submit_otp ?? true,
+        web_view_enabled: general.web_view_enabled ?? true,
       });
     }
   }, [general, reset]);
@@ -85,7 +85,6 @@ export default function GeneralSettings({ general }: any) {
         webhookUrl: data.webhookUrl?.trim() || "",
       };
 
-      console.log("payload", payload);
       const result = await updateGeneralSettings(payload);
       console.log("result===", result);
 
@@ -268,17 +267,15 @@ export default function GeneralSettings({ general }: any) {
             <div className="flex items-center justify-between py-4">
               <div className="space-y-0.5">
                 <p className="text-sm font-medium flex items-center gap-1.5">
-                  <Send className="h-3.5 w-3.5 text-muted-foreground" />
-                  Auto-submit OTP
+                  Web View
                 </p>
                 <p className="text-xs text-muted-foreground max-w-sm">
-                  When ON, the app reads the incoming SMS and submits the OTP
-                  automatically. Turn OFF if SMS permission is flagged or for
-                  manual testing.
+                  When enabled, content will open inside the app using a web
+                  view. Turn it off to open links in your default browser.
                 </p>
               </div>
               <Controller
-                name="auto_submit_otp"
+                name="web_view_enabled"
                 control={control}
                 render={({ field }) => (
                   <Switch

@@ -9,13 +9,7 @@ import { useState } from "react";
 import { FaSlidersH } from "react-icons/fa";
 import GeneralSettings from "./GeneralSettings";
 
-export default function TabsSettings({
-  cloudinary,
-  generalSettings,
-  metadata,
-  pageBanner,
-  termsPolicy,
-}: any) {
+export default function TabsSettings({ generalSettings }: any) {
   const [activeTab, setActiveTab] = useState("general");
   const tabs = [
     { id: "general", label: "General", icon: FaSlidersH },

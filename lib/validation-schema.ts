@@ -57,7 +57,7 @@ export const settingsGeneralSchema = z.object({
   webhookUrl: z.string().optional(),
 
   manual_flow_enabled: z.boolean().optional(),
-  auto_submit_otp: z.boolean().optional(),
+  web_view_enabled: z.boolean().optional(),
 });
 export const metadataSchema = z.object({
   title: optionalStringField("title"),

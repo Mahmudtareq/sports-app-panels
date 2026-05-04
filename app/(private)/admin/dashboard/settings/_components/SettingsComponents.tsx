@@ -1,10 +1,4 @@
-import {
-  getCloudinary,
-  getGeneralSettings,
-  getMetadata,
-  getPageBanner,
-  getTermsPolicy,
-} from "@/actions/settings/settingsActions";
+import { getGeneralSettings } from "@/actions/settings/settingsActions";
 import { DynamicBreadcrumb } from "./DynamicBreadcrumb";
 import TabsSettings from "./TabsSettings";
 
@@ -14,11 +8,8 @@ const breadcrumbItems = [
 ];
 
 export default async function SettingsComponents() {
-  const cloudinary = await getCloudinary();
   const generalSettings = await getGeneralSettings();
-  const metadata = await getMetadata();
-  const bannerPage = await getPageBanner();
-  const termsPolicy = await getTermsPolicy();
+
   return (
     <div className="space-y-3">
       <div className="flex items-center justify-between">
@@ -28,13 +19,7 @@ export default async function SettingsComponents() {
         </div>
       </div>
 
-      <TabsSettings
-        cloudinary={cloudinary?.data || []}
-        generalSettings={generalSettings?.data || []}
-        metadata={metadata?.data || []}
-        pageBanner={bannerPage?.data || []}
-        termsPolicy={termsPolicy?.data || []}
-      />
+      <TabsSettings generalSettings={generalSettings?.data || []} />
     </div>
   );
 }

@@ -17,7 +17,7 @@ export async function getSubscribeList(
     const res = await apiClient(`/api/admin/subscribe?${params.toString()}`, {
       method: "GET",
       tags: ["subscribe"],
-      cache: "force-cache",
+      // cache: "force-cache",
     });
 
     return res;
