@@ -1,6 +1,5 @@
 "use client";
 
-import * as React from "react";
 import {
   Carousel,
   CarouselContent,
@@ -8,9 +7,9 @@ import {
   type CarouselApi,
 } from "@/components/ui/carousel";
 import { cn } from "@/lib/utils";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import * as React from "react";
 import { Icons } from "../custom/icons";
-import { Button } from "./button";
-import { ChevronLeft, ChevronRight, ChevronsRightLeftIcon } from "lucide-react";
 
 interface CustomCarouselProps<T> {
   items: T[];
@@ -97,8 +96,6 @@ export function CustomCarousel<T>({
     return () => clearInterval(timer);
   }, [api, autoplay, interval, loop]);
 
-  const IconComponent = icon ? Icons[icon] : null;
-
   return (
     <div className={cn("relative w-full", className)}>
       {!hideHeader && (
@@ -128,7 +125,7 @@ export function CustomCarousel<T>({
               key={index}
               className={cn(
                 `basis-1/${visibleCount} px-2 md:px-3`,
-                itemClassName
+                itemClassName,
               )}
             >
               {renderItem(item, index)}
@@ -149,7 +146,7 @@ export function CustomCarousel<T>({
               "items-center hover:bg-transparent border rounded-[5px] h-[30px] w-[30px]",
               !api || api.selectedScrollSnap() === 0
                 ? "opacity-50 cursor-not-allowed"
-                : "opacity-100"
+                : "opacity-100",
             )}
           >
             {/* <Icons.leftChevron className="" /> */}
@@ -167,7 +164,7 @@ export function CustomCarousel<T>({
               "items-center hover:bg-transparent border rounded-[5px] h-[30px] w-[30px]",
               !api || api.selectedScrollSnap() === count - 1
                 ? "opacity-50 cursor-not-allowed"
-                : "opacity-100"
+                : "opacity-100",
             )}
           >
             {/* <Icons.rightChevron className="dark:text-[#F9FAFB]" /> */}
@@ -184,7 +181,7 @@ export function CustomCarousel<T>({
               onClick={() => api?.scrollTo(index)}
               className={cn(
                 "h-3.5 w-3.5 rounded-full border-2 border-gray-400 dark:border-primary transition-colors",
-                current === index + 1 && "border-primary bg-primary"
+                current === index + 1 && "border-primary bg-primary",
               )}
             />
           ))}

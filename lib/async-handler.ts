@@ -9,35 +9,35 @@ import { apiResponse } from "./utils";
 export type ApiHandler<T, P = Record<string, string>> = (
   req: NextRequest,
   data: T,
-  params: P
+  params: P,
 ) => Promise<NextResponse>;
 
 export type SimpleHandler<P = Record<string, string>> = (
   req: NextRequest,
-  params: P
+  params: P,
 ) => Promise<NextResponse>;
 
 // Overload 1: With validation
 export function asyncHandler<T, P = Record<string, string>>(
   schema: z.ZodSchema<T>,
   handler: ApiHandler<T, P>,
-  checkAuth?: boolean
+  checkAuth?: boolean,
 ): (req: NextRequest, context: { params: Promise<P> }) => Promise<NextResponse>;
 
 // Overload 2: Without validation
 export function asyncHandler<P = Record<string, string>>(
   handler: SimpleHandler<P>,
-  checkAuth?: boolean
+  checkAuth?: boolean,
 ): (req: NextRequest, context: { params: Promise<P> }) => Promise<NextResponse>;
 
 // Implementation
 export function asyncHandler<T, P = Record<string, string>>(
   schemaOrHandler: z.ZodSchema<T> | SimpleHandler<P>,
   handlerOrCheckAuth?: ApiHandler<T, P> | boolean,
-  checkAuth?: boolean
+  checkAuth?: boolean,
 ): (
   req: NextRequest,
-  context: { params: Promise<P> }
+  context: { params: Promise<P> },
 ) => Promise<NextResponse> {
   // Determine which overload is being used
   const isValidationCase =
@@ -53,7 +53,11 @@ export function asyncHandler<T, P = Record<string, string>>(
       try {
         await dbConnect();
 
-        // Authenticate if required
+        //  API key check — public routes only
+        // const apiKeyError = validateApiKey(req);
+        // if (apiKeyError) return apiKeyError;
+
+        // JWT check — protected routes only
         if (shouldCheckAuth) {
           const { error, data } = await authenticate(req);
           if (error) return error;
@@ -69,11 +73,14 @@ export function asyncHandler<T, P = Record<string, string>>(
         return await handler(req, data, params);
       } catch (error) {
         if (error instanceof z.ZodError) {
-          const details = error.issues.reduce((acc, issue) => {
-            const field = issue.path.join(".") || "general";
-            acc[field] = issue.message;
-            return acc;
-          }, {} as Record<string, string>);
+          const details = error.issues.reduce(
+            (acc, issue) => {
+              const field = issue.path.join(".") || "general";
+              acc[field] = issue.message;
+              return acc;
+            },
+            {} as Record<string, string>,
+          );
 
           return apiResponse(false, 400, "Request validation failed!", details);
         }
@@ -97,7 +104,11 @@ export function asyncHandler<T, P = Record<string, string>>(
     try {
       await dbConnect();
 
-      // Authenticate if required
+      // API key check — public routes only
+      // const apiKeyError = validateApiKey(req);
+      // if (apiKeyError) return apiKeyError;
+
+      // JWT check — protected routes only
       if (shouldCheckAuth) {
         const { error, data } = await authenticate(req);
         if (error) return error;
