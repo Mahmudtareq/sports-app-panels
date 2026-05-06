@@ -5,7 +5,7 @@ import {
   SidebarContent,
   SidebarHeader,
 } from "@/components/ui/sidebar";
-import { adminDashboardMenu } from "@/public/sample-data/photography-sample-data";
+import { adminDashboardMenu } from "@/public/sample-data/navitems-data";
 import AppSidebarHeader from "./AppSidebarHeader";
 import NavMenuItems from "./NavMenuItems";
 

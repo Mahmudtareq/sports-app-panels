@@ -99,7 +99,7 @@ export default function LoginForm() {
           <CustomButton
             type="submit"
             disabled={isSubmitting}
-            className="w-full transition-colors cursor-pointer bg-primary rounded-lg"
+            className="w-full transition-colors cursor-pointer bg-[#0F172B] hover:bg-[#0F172B] rounded-lg"
           >
             {isSubmitting ? "Signing in..." : "Sign In"}
           </CustomButton>

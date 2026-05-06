@@ -6,7 +6,8 @@ export async function getDashboardStats() {
   try {
     const res = await apiClient(`/api/admin/dashboard/stats`, {
       method: "GET",
-      //cache: "force-cache",
+      //   tags: ["contact-us"],
+      // cache: "no-store",
     });
 
     return res;

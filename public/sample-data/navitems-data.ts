@@ -34,26 +34,3 @@ export const adminDashboardMenu = {
     },
   ],
 };
-
-export const navItems = [
-  {
-    label: "HOME",
-    href: "/",
-  },
-  {
-    label: "ABOUT",
-    href: "/about",
-  },
-  {
-    label: "GALLERY",
-    href: "/gallery",
-  },
-  {
-    label: "STORIES",
-    href: "/stories",
-  },
-  {
-    label: "Contact",
-    href: "/lets-connect",
-  },
-];

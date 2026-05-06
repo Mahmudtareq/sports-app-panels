@@ -5,10 +5,20 @@ import { routes } from "./config/routes";
 export default auth((req) => {
   const { pathname } = req.nextUrl;
   const token = req.auth?.token;
-  const isProtectedx =
+  const isAdminRoute =
     pathname.startsWith("/admin") && pathname !== "/admin/login";
 
-  if (isProtectedx && !token) {
+  if (pathname === "/") {
+    if (!token) {
+      return NextResponse.redirect(new URL("/admin/login", req.url));
+    } else {
+      return NextResponse.redirect(
+        new URL(routes.privateRoutes.admin.dashboard, req.url),
+      );
+    }
+  }
+
+  if (isAdminRoute && !token) {
     return NextResponse.redirect(new URL("/admin/login", req.url));
   }
 
@@ -22,5 +32,5 @@ export default auth((req) => {
 });
 
 export const config = {
-  matcher: ["/admin/:path*", "/api/admin/:path*"],
+  matcher: ["/", "/admin/:path*", "/api/admin/:path*"],
 };

@@ -12,8 +12,6 @@ export const POST = asyncHandler(
   async (_, data: z.infer<typeof adminLoginSchema>) => {
     const { email, password } = data;
 
-    console.log("-----------------------------");
-
     const admin = await User.findOne({ email: email });
     if (!admin) return apiResponse(false, 400, "Invalid account!");
 

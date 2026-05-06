@@ -3,7 +3,6 @@
 import { apiClient } from "@/lib/api-client";
 
 export async function handleLogin(formData: FormData) {
-  console.log("hello");
   try {
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;

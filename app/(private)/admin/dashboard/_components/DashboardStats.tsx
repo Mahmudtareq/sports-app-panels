@@ -1,21 +1,8 @@
-import { Briefcase, Image, MessageSquare, Users } from "lucide-react";
+import { Users } from "lucide-react";
 import StatCard from "./StatCard";
 
 interface StatsData {
-  story: { total: number; active: number; inactive: number; featured: number };
-  category: {
-    total: number;
-    active: number;
-    inactive: number;
-    featured?: number;
-  };
-  testimonial: {
-    total: number;
-    active: number;
-    inactive: number;
-    featured?: number;
-  };
-  gallery: {
+  subscribe: {
     total: number;
     active: number;
     inactive: number;
@@ -26,40 +13,13 @@ interface StatsData {
 const DashboardStats = ({ statsData }: { statsData: StatsData }) => {
   const statCards = [
     {
-      title: "Story",
+      title: "Subscribe",
       icon: Users,
-      data: statsData?.story || "",
+      data: statsData?.subscribe || "",
       gradient: "from-blue-500 to-cyan-500",
       bgLight: "bg-blue-50",
       bgDark: "dark:bg-blue-950/30",
       iconColor: "text-blue-600 dark:text-blue-400",
-    },
-    {
-      title: "Category",
-      icon: Briefcase,
-      data: statsData?.category || "",
-      gradient: "from-purple-500 to-pink-500",
-      bgLight: "bg-purple-50",
-      bgDark: "dark:bg-purple-950/30",
-      iconColor: "text-purple-600 dark:text-purple-400",
-    },
-    {
-      title: "Testimonials",
-      icon: MessageSquare,
-      data: statsData?.testimonial || "",
-      gradient: "from-emerald-500 to-teal-500",
-      bgLight: "bg-emerald-50",
-      bgDark: "dark:bg-emerald-950/30",
-      iconColor: "text-emerald-600 dark:text-emerald-400",
-    },
-    {
-      title: "Gallery",
-      icon: Image,
-      data: statsData?.gallery || "",
-      gradient: "from-orange-500 to-red-500",
-      bgLight: "bg-orange-50",
-      bgDark: "dark:bg-orange-950/30",
-      iconColor: "text-orange-600 dark:text-orange-400",
     },
   ];
   return (

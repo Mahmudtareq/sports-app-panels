@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { useTableState } from "@/store/useTableStore";
 import { X } from "lucide-react";
 import { DynamicBreadcrumb } from "../../settings/_components/DynamicBreadcrumb";
+import SearchBar from "./SearchBar";
 export interface TableToolbarProps {
   tableId: string;
 }
@@ -44,10 +45,10 @@ export default function SubscribeToolbar({ tableId }: TableToolbarProps) {
           </div>
         </div>
         <div className="flex items-center gap-4 flex-wrap">
-          {/* <SearchBar
+          <SearchBar
             value={searchInput}
             onChange={(e) => setSearchInput(e.target.value)}
-          /> */}
+          />
           <div>
             {hasActiveFilters && (
               <div className="flex items-center gap-2 mt-2 md:mt-0">

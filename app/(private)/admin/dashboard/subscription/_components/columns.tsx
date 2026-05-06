@@ -5,7 +5,7 @@ import { ColumnDef } from "@tanstack/react-table";
 
 import moment from "moment-timezone";
 
-// ✅ Define the type based on API response
+// Define the type based on API response
 export type Subscribe = {
   _id: string;
   phone: string;
@@ -52,11 +52,11 @@ export const columns: ColumnDef<Subscribe>[] = [
       );
     },
   },
-  {
-    id: "actions",
-    header: "Actions",
-    cell: ({ row }) => {
-      return <div className="flex items-center gap-2"></div>;
-    },
-  },
+  // {
+  //   id: "actions",
+  //   header: "Actions",
+  //   cell: ({ row }) => {
+  //     return <div className="flex items-center gap-2"></div>;
+  //   },
+  // },
 ];

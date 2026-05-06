@@ -53,8 +53,6 @@ export default function GeneralSettings({ general }: any) {
     formState: { isSubmitting, errors },
   } = methods;
 
-  console.log("general", general);
-
   // ── Populate form when data arrives ───────────────────────────────────────
   useEffect(() => {
     if (general) {
@@ -77,7 +75,6 @@ export default function GeneralSettings({ general }: any) {
     const loadingToast = ToastMessage.loading({
       title: "Updating general settings...",
     });
-    console.log("data", data);
     try {
       const payload: GeneralFormData = {
         ...data,
@@ -193,9 +190,6 @@ export default function GeneralSettings({ general }: any) {
               <Globe className="h-4 w-4 text-primary" />
               App URL Configuration
             </CardTitle>
-            <CardDescription>
-              URLs are encoded to base64 before being sent to the mobile app
-            </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
             <InputField
@@ -224,9 +218,6 @@ export default function GeneralSettings({ general }: any) {
                   },
                 }}
               />
-              <p className="text-xs text-muted-foreground">
-                Called via POST when a user unsubscribes from the service.
-              </p>
             </div>
           </CardContent>
         </Card>
